@@ -49,6 +49,39 @@
 		<association property="user" javaType="user" select="com.hxzy.mapper.UserMapper.queryOne" column="user_id" fetchType="lazy"></association>
 	</resultMap>
 	
+	<resultMap type="orders" id="ordersResultMap3">
+		<!-- 
+			指定列名和属性名
+			column:数据库列名
+			property:java bean属性名
+		 -->
+		 
+		 <!-- 指定主键 -->
+		<id column="oid" property="id"/>
+		<result column="user_id" property="userId"/>
+		<result column="number" property="number"/>
+		<result column="createtime" property="createTime"/>
+		<result column="note" property="note"/>
+		
+		<!-- property中的值为orders类中的user对象名 -->
+		<association property="user" javaType="user" columnPrefix="u_">
+			<!-- 此处的id为sql语句中，查询的oraders表，关于user的外键的列的别名 -->
+			<id column="user_id" property="id"/>
+			<result column="username" property="username"/>
+			<result column="birthday" property="birthday"/>
+			<result column="sex" property="sex"/>
+			<result column="address" property="address"/>
+		</association>
+		
+		<!-- ofType:details集合中的每个元素的java类型 -->
+		<collection property="details" ofType="ordersDetail" columnPrefix="d_">
+			<id column="id" property="id"/>
+			<result column="item_num" property="itemNum"/>
+			<result column="item_id" property="itemId"/>
+			<result column="orders_id" property="ordersId"/>
+		</collection>
+	</resultMap>
+	
 	<sql id="queryOrdersSQL">
 		select u.id u_id,
 			u.username u_username,
@@ -82,5 +115,35 @@
 	 -->
 	<select id="queryAllLazy" resultMap="ordersResultMap2">
 		select * from orders 
+	</select>
+	
+	<!-- 根据用户id查询订单消费明细 -->
+	<select id="queryDetailByuserId" resultMap="ordersResultMap3" parameterType="Integer">
+		select 
+			o.id,
+			o.user_id u_user_id,
+			o.number,
+			o.createtime,
+			o.note,
+			u.id u_id,
+			u.username u_username,
+			u.birthday u_birthday,
+			u.sex u_sex,
+			u.address u_address,
+			d.id d_id,
+			d.items_num d_item_num,
+			d.items_id d_item_id,
+			d.orders_id d_orders_id,
+			i.id i_id,
+			i.`name` i_name,
+			i.price i_price
+		from `orders` o
+		inner join `user` u
+		on o.user_id = u.id
+		inner join orderdetail d
+		on o.id = d.orders_id
+		inner join items i
+		on d.items_id = i.id
+		where u.id=#{userId}
 	</select>
 </mapper>

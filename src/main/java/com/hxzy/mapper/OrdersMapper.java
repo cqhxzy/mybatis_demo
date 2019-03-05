@@ -11,4 +11,11 @@ public interface OrdersMapper extends CommonMapper<Orders> {
 	 */
 	public List<Orders> queryAll();
 	public List<Orders> queryAllLazy();
+	
+	/**
+	 * 根据用户id查询用户的订单消费明细
+	 * @return
+	 */
+	public List<Orders> queryDetailByuserId(Integer userId);
+	
 }

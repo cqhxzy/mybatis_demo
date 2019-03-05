@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<!-- 编写sql语句的配置文件，对应mapper接口 -->
+<mapper namespace="com.hxzy.mapper.OrdersDetailMapper">
+	<resultMap type="ordersDetail" id="ordersDetailResultMap">
+		<!-- 指定数据库中唯一标示列 -->
+		<id column="id" property="id"/>
+		<result column="orders_id" property="ordersId"/>
+		<result column="items_id" property="itemId"/>
+		<result column="items_num" property="itemNum"/>
+		
+		<association property="items" javaType="item" select="com.hxzy.mapper.ItemMapper.findItemById" column="items_id" fetchType="lazy"></association>
+	</resultMap>
+	
+	<select id="findDetailById" parameterType="Integer" resultMap="ordersDetailResultMap">
+		select *
+		from orderdetail
+		where id = #{id}
+	</select>
+	<select id="findDetailByOrderId"></select>
+</mapper>

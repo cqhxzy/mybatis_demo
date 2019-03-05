@@ -1,6 +1,7 @@
 package com.hxzy.entity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单表
@@ -14,7 +15,9 @@ public class Orders {
 	private Date createTime;
 	private String note;
 	
-	private User user;
+	private User user; /*多对一，多个订单对应一个用户*/
+	private List<OrdersDetail> details; /*一对多，一个订单对应多个订单明细*/
+	
 	public Integer getId() {
 		return id;
 	}
@@ -52,6 +55,13 @@ public class Orders {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	public List<OrdersDetail> getDetails() {
+		return details;
+	}
+	public void setDetails(List<OrdersDetail> details) {
+		this.details = details;
+	}
 	@Override
 	public String toString() {
 		return "Orders [id=" + id + ", userId=" + userId + ", number=" + number + ", createTime=" + createTime
@@ -60,7 +70,8 @@ public class Orders {
 	public Orders() {
 		super();
 	}
-	public Orders(Integer id, Integer userId, String number, Date createTime, String note, User user) {
+	public Orders(Integer id, Integer userId, String number, Date createTime, String note, User user,
+			List<OrdersDetail> details) {
 		super();
 		this.id = id;
 		this.userId = userId;
@@ -68,7 +79,9 @@ public class Orders {
 		this.createTime = createTime;
 		this.note = note;
 		this.user = user;
+		this.details = details;
 	}
+	
 	
 	
 }

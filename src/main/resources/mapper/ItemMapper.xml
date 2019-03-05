@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<!-- 编写sql语句的配置文件，对应mapper接口 -->
+<mapper namespace="com.hxzy.mapper.ItemMapper">
+	<resultMap type="item" id="itemMapperResultMap">
+		<!-- 指定数据库中唯一标示列 -->
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="price" property="price"/>
+		<result column="detail" property="detail"/>
+		<result column="pic" property="pic"/>
+		<result column="createtime" property="createtime"/>
+	</resultMap>
+	
+	<select id="findItemById" parameterType="Integer" resultMap="itemMapperResultMap">
+		select *
+		from items
+		where id = #{id}
+		
+	</select>
+	
+</mapper>
